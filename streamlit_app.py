@@ -1,29 +1,15 @@
 import streamlit as st
-import pandas as pd
-import datetime
+from streamlit_calendar import calendar
 
-# Configuração básica do aplicativo
-st.title('Aplicativo de Agendamento')
+# Defina eventos no formato JSON, semelhante ao FullCalendar
+events = [
+    {"title": "Evento 1", "start": "2024-09-05T10:00:00", "end": "2024-09-05T12:00:00"},
+    {"title": "Evento 2", "start": "2024-09-06T14:00:00", "end": "2024-09-06T16:00:00"},
+]
 
-# Entrada de dados para o agendamento
-st.header('Agende um compromisso')
+st.title("Calendário de Agendamento")
 
-# Coletando informações do usuário
-name = st.text_input('Seu Nome:')
-date = st.date_input('Data do Compromisso:', datetime.date.today())
-time = st.time_input('Hora do Compromisso:', datetime.time(9, 0))
-service = st.selectbox('Tipo de Serviço:', ['Corte de Cabelo', 'Manicure', 'Massagem', 'Outros'])
+# Renderize o calendário
+selected = calendar(events=events, defaultView='dayGridMonth')
 
-if st.button('Agendar'):
-    # Salvando as informações de agendamento
-    new_appointment = {'Nome': name, 'Data': date, 'Hora': time, 'Serviço': service}
-    st.write(f"Agendamento realizado para {name} no dia {date} às {time} para {service}.")
-    # Aqui você pode adicionar código para salvar no banco de dados ou enviar uma confirmação por WhatsApp
-
-# Visualizando os compromissos agendados (apenas um exemplo básico)
-st.header('Compromissos Agendados')
-appointments = pd.DataFrame([
-    {'Nome': 'João', 'Data': '2024-09-03', 'Hora': '09:00', 'Serviço': 'Corte de Cabelo'},
-    {'Nome': 'Maria', 'Data': '2024-09-03', 'Hora': '10:00', 'Serviço': 'Manicure'}
-])
-st.table(appointments)
+st.write("Evento selecionado:", selected)
